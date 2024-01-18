@@ -38,6 +38,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -53,7 +54,6 @@ import com.kygoinc.jetpackcoopapp.R
 import com.kygoinc.jetpackcoopapp.viewmodels.AuthResult
 import com.kygoinc.jetpackcoopapp.viewmodels.LoginViewModel
 import kotlinx.coroutines.launch
-import androidx.compose.ui.text.buildAnnotatedString as buildAnnotatedString
 
 
 @Composable
@@ -287,7 +287,9 @@ fun PasswordTextFieldComponent(
                 )
             }
         },
-        visualTransformation = if (passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation(mask = 'X')
+        visualTransformation = if (passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation(
+            mask = 'X'
+        )
 
 
     )
@@ -397,52 +399,3 @@ fun LoginButtonComponent(
     }
 }
 
-
-//@Composable
-//fun LoginButtonComponent(
-//    username: String,
-//    password: String,
-//    loginViewModel: LoginViewModel
-//) {
-//    val coroutineScope = rememberCoroutineScope()
-//    var isAuthenticating by remember { mutableStateOf(false) }
-//
-//    Button(
-//        onClick = {
-//            if (!isAuthenticating) {
-//                isAuthenticating = true
-//                coroutineScope.launch {
-//                    try {
-//                        loginViewModel.authenticate(username, password)
-//                        Log.d("Login", "$username, $password")
-//                    } catch (e: Exception) {
-//                        // Handle authentication errors gracefully
-//                        isAuthenticating = false // Allow retry on error
-//                        Log.d("Login", "Authenicating reset to false")
-//                    }
-//                }
-//            }
-//        },
-//        modifier = Modifier.fillMaxWidth(),
-//        contentPadding = PaddingValues(8.dp),
-//        colors = ButtonDefaults.buttonColors(Color.Transparent),
-//        enabled = !isAuthenticating // Disable button during authentication
-//    ) {
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .heightIn(48.dp)
-//                .background(
-//                    color = colorResource(id = R.color.olive_green),
-//                )
-//                .alpha(if (isAuthenticating) 0.7f else 1f), // Visual feedback
-//            contentAlignment = Alignment.Center
-//        ) {
-//            Text(
-//                text = if (isAuthenticating) "Authenticating..." else "Login",
-//                fontSize = 18.sp,
-//                color = colorResource(id = R.color.dark_green)
-//            )
-//        }
-//    }
-//}

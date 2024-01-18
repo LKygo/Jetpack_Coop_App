@@ -54,14 +54,12 @@ fun WelcomeDash(username: String, navController: NavHostController) {
 
                 IconHolderComponent(
                     painterResource(id = R.drawable.ic_logout),
-                    modifier = Modifier
-                        .padding(top = 20.dp),
+                    modifier = Modifier.padding(top = 20.dp),
                     description = "Logout"
                 )
                 LogoutTextComponent(
                     value = "Logout",
-                    modifier = Modifier
-                        .wrapContentSize(),
+                    modifier = Modifier.wrapContentSize(),
                     navController = navController
                 )
             }
@@ -103,8 +101,7 @@ fun WelcomeDash(username: String, navController: NavHostController) {
                     ) {
                     MultiColorWelcomeTextComponent(
                         value = username,
-                        modifier = Modifier
-                            .padding(vertical = 20.dp),
+                        modifier = Modifier.padding(vertical = 20.dp),
 
                         )
                 }

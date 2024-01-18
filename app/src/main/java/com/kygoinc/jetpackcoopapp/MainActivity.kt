@@ -23,8 +23,7 @@ class MainActivity : ComponentActivity() {
             JetpackCoopAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
                     LoginApplication()
                 }
@@ -49,10 +48,10 @@ fun LoginApplication() {
 }
 
 
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
-//    JetpackCoopAppTheme {
-//       Login(navController = navController)
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    JetpackCoopAppTheme {
+        Login(navController = rememberNavController())
+    }
+}

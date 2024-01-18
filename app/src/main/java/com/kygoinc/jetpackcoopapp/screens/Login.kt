@@ -70,8 +70,6 @@ fun Login(loginViewModel: LoginViewModel = viewModel(), navController: NavHostCo
     ) {
 
 
-
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -126,7 +124,6 @@ fun Login(loginViewModel: LoginViewModel = viewModel(), navController: NavHostCo
 
 
                     Column(
-
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                             .fillMaxSize()
@@ -135,17 +132,14 @@ fun Login(loginViewModel: LoginViewModel = viewModel(), navController: NavHostCo
                         ) {
                         NormalTextComponent(
                             value = "Use your credentials to log in",
-                            modifier = Modifier
-                                .align(Alignment.Start),
+                            modifier = Modifier.align(Alignment.Start),
 
                             )
 
                         Spacer(modifier = Modifier.padding(top = 20.dp))
-                        NormalTextFieldComponent(
-                            labelValue = "Username",
+                        NormalTextFieldComponent(labelValue = "Username",
                             painterResource(id = R.drawable.person_icon),
-                            onValueChange = { username = it }
-                        )
+                            onValueChange = { username = it })
 
                         PasswordTextFieldComponent(
                             labelValue = "Password",
@@ -163,30 +157,27 @@ fun Login(loginViewModel: LoginViewModel = viewModel(), navController: NavHostCo
 
                         // Snackbar
                         if (snackbarVisibleState.value) {
-                            Snackbar(
-                                modifier = Modifier.padding(8.dp),
-                                action = {
-                                    TextButton(onClick = { snackbarVisibleState.value = false }) {
-                                        Text("Dismiss")
-                                    }
+                            Snackbar(modifier = Modifier.padding(8.dp), action = {
+                                TextButton(onClick = { snackbarVisibleState.value = false }) {
+                                    Text("Dismiss")
                                 }
-                            ) {
+                            }) {
                                 // Display a message based on the authentication result
                                 when (authResult) {
                                     is AuthResult.Failure -> {
                                         Text("Authentication Failed: ${authResult.errorMessage}")
 
                                     }
+
                                     AuthResult.Success -> {
                                         Text("Login successful. Welcome, $username!")
                                         navController.navigate("welcomeDash/$username")
 
                                     }
+
                                     null -> Text("Authenticating...")
                                 }
                             }
-
-
                         }
                     }
                 }
@@ -194,8 +185,6 @@ fun Login(loginViewModel: LoginViewModel = viewModel(), navController: NavHostCo
         }
     }
 }
-
-
 
 
 @Preview
