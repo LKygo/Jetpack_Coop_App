@@ -21,8 +21,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.kygoinc.jetpackcoopapp.R
@@ -30,7 +28,6 @@ import com.kygoinc.jetpackcoopapp.components.AppLogo
 import com.kygoinc.jetpackcoopapp.components.IconHolderComponent
 import com.kygoinc.jetpackcoopapp.components.LogoutTextComponent
 import com.kygoinc.jetpackcoopapp.components.MultiColorWelcomeTextComponent
-import com.kygoinc.jetpackcoopapp.components.NormalTextComponent
 
 
 @OptIn(ExperimentalComposeUiApi::class)

@@ -87,7 +87,7 @@ fun Login(loginViewModel: LoginViewModel = viewModel(), navController: NavHostCo
 
                 Column(
                     verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxSize(),
 
                     ) {
@@ -127,7 +127,7 @@ fun Login(loginViewModel: LoginViewModel = viewModel(), navController: NavHostCo
 
                     Column(
 
-                        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
+                        horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(top = 80.dp, start = 24.dp, end = 24.dp),
