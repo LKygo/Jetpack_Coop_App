@@ -29,8 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.kygoinc.jetpackcoopapp.R
 import com.kygoinc.jetpackcoopapp.components.AppLogo
@@ -44,7 +43,7 @@ import com.kygoinc.jetpackcoopapp.viewmodels.LoginViewModel
 
 
 @Composable
-fun Login(loginViewModel: LoginViewModel = viewModel()) {
+fun Login(loginViewModel: LoginViewModel = viewModel(), navController: NavHostController) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -55,8 +54,6 @@ fun Login(loginViewModel: LoginViewModel = viewModel()) {
     // State for displaying the Snackbar
     val snackbarVisibleState = remember { mutableStateOf(false) }
 
-//    Navigation
-    val navController = rememberNavController()
 
     // Trigger Snackbar visibility based on authResult
     LaunchedEffect(authResult) {
@@ -71,17 +68,7 @@ fun Login(loginViewModel: LoginViewModel = viewModel()) {
             .fillMaxSize()
             .background(color = colorResource(id = R.color.dark_green))
     ) {
-//        NavHost(
-//            navController = navController,
-//            startDestination = "loginScreen"
-//        ) {
-//            composable("loginScreen") {
-//                Login()
-//            }
-//            composable("welcomeDash") {
-//                WelcomeDash()
-//            }
-//        }
+
 
 
 
@@ -95,7 +82,7 @@ fun Login(loginViewModel: LoginViewModel = viewModel()) {
                 modifier = Modifier
                     .fillMaxHeight(0.3f)
                     .fillMaxWidth()
-                    .background(color = colorResource(id = R.color.dark_green)),
+                    .background(color = colorResource(id = R.color.n_dark_green)),
             ) {
 
                 Column(
@@ -132,7 +119,7 @@ fun Login(loginViewModel: LoginViewModel = viewModel()) {
                     modifier = Modifier
                         .fillMaxHeight()
                         .fillMaxWidth()
-                        .background(color = colorResource(id = R.color.dark_green).copy(alpha = 0.95f)),
+                        .background(color = colorResource(id = R.color.n_dark_green).copy(alpha = 0.95f)),
 
 
                     ) {
@@ -143,7 +130,7 @@ fun Login(loginViewModel: LoginViewModel = viewModel()) {
                         horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(top = 100.dp),
+                            .padding(top = 80.dp, start = 24.dp, end = 24.dp),
 
                         ) {
                         NormalTextComponent(
@@ -163,7 +150,7 @@ fun Login(loginViewModel: LoginViewModel = viewModel()) {
                         PasswordTextFieldComponent(
                             labelValue = "Password",
                             painterResource(id = R.drawable.lock_icon),
-                            onValueChange = { password = it }
+                            onValueChange = { password = it },
                         )
 
                         Spacer(modifier = Modifier.padding(top = 20.dp))
@@ -186,8 +173,15 @@ fun Login(loginViewModel: LoginViewModel = viewModel()) {
                             ) {
                                 // Display a message based on the authentication result
                                 when (authResult) {
-                                    is AuthResult.Failure -> Text("Authentication Failed: ${authResult.errorMessage}")
-                                    AuthResult.Success -> Text("Login successful. Welcome, $username!")
+                                    is AuthResult.Failure -> {
+                                        Text("Authentication Failed: ${authResult.errorMessage}")
+
+                                    }
+                                    AuthResult.Success -> {
+                                        Text("Login successful. Welcome, $username!")
+                                        navController.navigate("welcomeDash/$username")
+
+                                    }
                                     null -> Text("Authenticating...")
                                 }
                             }
@@ -207,5 +201,5 @@ fun Login(loginViewModel: LoginViewModel = viewModel()) {
 @Preview
 @Composable
 fun DefaultPreviewofLogin() {
-    Login()
+    Login(navController = rememberNavController())
 }

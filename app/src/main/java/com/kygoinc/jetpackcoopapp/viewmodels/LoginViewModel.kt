@@ -19,62 +19,64 @@ class LoginViewModel : ViewModel() {
 
     val authResult: State<AuthResult?> = _authResult
 
-    suspend fun authenticate(username: String, password: String, navController: NavController)  {
-        try {
+    suspend fun authenticate(username: String, password: String) {
+
+        if (username.isNullOrBlank() || password.isNullOrBlank()) {
+            _authResult.value = AuthResult.Failure("Please fill in both fields to proceed")
+        } else {
+            try {
 
 
-            // Create a JSON body with user credentials
-            val jsonBody = """
+                // Create a JSON body with user credentials
+                val jsonBody = """
                 {
                     "username": "$username",
                     "password": "$password"
                 }
             """.trimIndent()
 
-            Log.d("loginJson", jsonBody)
-            // Convert JSON string to RequestBody
-            val requestBody = jsonBody.toRequestBody("application/json".toMediaType())
+                Log.d("loginJson", jsonBody)
+                // Convert JSON string to RequestBody
+                val requestBody = jsonBody.toRequestBody("application/json".toMediaType())
 
-            // Make the POST request using OkHttpHelper
-            withContext(Dispatchers.IO) {
-                val response = okHttpHelper.sendRequestWithCredentials(
-                    apiUrl, username, password, "POST", requestBody
-                )
+                // Make the POST request using OkHttpHelper
+                withContext(Dispatchers.IO) {
+                    val response = okHttpHelper.sendRequestWithCredentials(
+                        apiUrl, username, password, "POST", requestBody
+                    )
 
-                // Handle the response and update the authResult accordingly
-                if (response != null) {
-                    when (response.code) {
-                        200 -> {
-                            _authResult.value = AuthResult.Success
+                    // Handle the response and update the authResult accordingly
+                    if (response != null) {
+                        when (response.code) {
+                            200 -> {
+                                _authResult.value = AuthResult.Success
+                                Log.d("LoginVM", "Login successful")
+                            }
 
-                            navController.navigate("welcomeDash")
-                            Log.d("LoginVM", "Login successful")
+                            401 -> {
+                                _authResult.value = AuthResult.Failure("Invalid credentials")
+                                Log.d("LoginVM", "Invalid credentials")
+                            }
 
+                            404 -> {
+                                _authResult.value = AuthResult.Failure("Server not found")
+                                Log.d("LoginVM", "Server not found")
+                            }
 
-                        }
-
-                        401 -> {
-                            _authResult.value = AuthResult.Failure("Invalid credentials")
-                            Log.d("LoginVM", "Invalid credentials")
-                        }
-
-                        404 -> {
-                            _authResult.value = AuthResult.Failure("Server not found")
-                            Log.d("LoginVM", "Server not found")
-                        }
-
-                        else -> {
-                            _authResult.value = AuthResult.Failure("Something went wrong")
-                            Log.d("LoginVM", response.message)
+                            else -> {
+                                _authResult.value = AuthResult.Failure("Something went wrong")
+                                Log.d("LoginVM", response.message)
+                            }
                         }
                     }
                 }
-            }
 
-        } catch (e: Exception) {
-            // Handle network or other exceptions
-            _authResult.value = AuthResult.Failure("An error occurred: ${e.message}")
-            Log.e("LoginVM", "An error occurred: ${e.message}", e)
+
+            } catch (e: Exception) {
+                // Handle network or other exceptions
+                _authResult.value = AuthResult.Failure("An error occurred: ${e.message}")
+                Log.e("LoginVM", "An error occurred: ${e.message}", e)
+            }
         }
     }
 

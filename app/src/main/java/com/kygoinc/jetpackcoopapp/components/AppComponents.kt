@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -46,6 +47,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.kygoinc.jetpackcoopapp.R
 import com.kygoinc.jetpackcoopapp.viewmodels.AuthResult
@@ -68,6 +70,39 @@ fun NormalTextComponent(value: String, modifier: Modifier, style: TextStyle = Te
             color = Color.White
         ),
 
+        )
+}
+
+@Composable
+fun LogoutTextComponent(
+    value: String,
+    modifier: Modifier,
+    style: SpanStyle = SpanStyle(
+        fontSize = 20.sp,
+        fontStyle = FontStyle.Normal,
+        fontWeight = FontWeight.Normal,
+        color = Color.White
+    ),
+    navController: NavController
+) {
+    val annotatedString = buildAnnotatedString {
+        withStyle(style) {
+            append(value)
+        }
+        addStringAnnotation("navigate", "clickEvent", 0, value.length)
+    }
+
+    ClickableText(
+        text = annotatedString,
+        modifier = modifier.padding(top = 14.dp, start = 12.dp),
+        onClick = { offset ->
+            annotatedString.getStringAnnotations(offset, offset + 1)
+                .firstOrNull { it.tag == "navigate" }
+                ?.let {
+                    // Logout of app
+                    navController.navigate("login")
+                }
+        }
     )
 }
 
@@ -95,11 +130,11 @@ fun MultiColorWelcomeTextComponent(
             withStyle(style = SpanStyle(color = textColor, fontWeight = FontWeight.Bold)) {
                 append(value)
             }
-            append(" to the new Co-op Bank App")
+            append(" to the new Co-op Bank App!")
         },
         modifier
-            .fillMaxWidth()
-            .padding(top = 14.dp, start = 12.dp),
+            .wrapContentSize()
+            .padding(top = 14.dp),
         style = style.copy(
             fontSize = 24.sp,
             fontStyle = FontStyle.Normal,
@@ -141,7 +176,11 @@ fun AppLogo(modifier: Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NormalTextFieldComponent(labelValue: String, painterResource: Painter, onValueChange: (String) -> Unit) {
+fun NormalTextFieldComponent(
+    labelValue: String,
+    painterResource: Painter,
+    onValueChange: (String) -> Unit
+) {
 
     val usernameValue = remember {
         mutableStateOf("")
@@ -154,7 +193,8 @@ fun NormalTextFieldComponent(labelValue: String, painterResource: Painter, onVal
         value = usernameValue.value,
         onValueChange = {
             usernameValue.value = it
-            onValueChange(it) },
+            onValueChange(it)
+        },
         label = { Text(text = labelValue) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = Color.White,
@@ -247,7 +287,7 @@ fun PasswordTextFieldComponent(
                 )
             }
         },
-        visualTransformation = if (passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation()
+        visualTransformation = if (passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation(mask = 'X')
 
 
     )
@@ -280,6 +320,7 @@ fun NormalButtonComponent(
 
     }
 }
+
 @Composable
 fun LoginButtonComponent(
     username: String,
@@ -302,6 +343,7 @@ fun LoginButtonComponent(
             is AuthResult.Success, is AuthResult.Failure -> {
                 isAuthenticating = false
             }
+
             null -> {
                 // No response yet, keep isAuthenticating unchanged
             }
@@ -321,7 +363,7 @@ fun LoginButtonComponent(
                 isAuthenticating = true
                 coroutineScope.launch {
                     try {
-                        loginViewModel.authenticate(username, password, navController)
+                        loginViewModel.authenticate(username, password)
                         Log.d("Login", "$username, $password")
                     } catch (e: Exception) {
                         // Handle authentication errors gracefully
@@ -354,8 +396,6 @@ fun LoginButtonComponent(
         }
     }
 }
-
-
 
 
 //@Composable

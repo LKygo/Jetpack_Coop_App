@@ -1,6 +1,5 @@
 package com.kygoinc.jetpackcoopapp.screens
 
-import android.widget.GridLayout
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,16 +21,21 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.kygoinc.jetpackcoopapp.R
 import com.kygoinc.jetpackcoopapp.components.AppLogo
 import com.kygoinc.jetpackcoopapp.components.IconHolderComponent
+import com.kygoinc.jetpackcoopapp.components.LogoutTextComponent
 import com.kygoinc.jetpackcoopapp.components.MultiColorWelcomeTextComponent
 import com.kygoinc.jetpackcoopapp.components.NormalTextComponent
 
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun WelcomeDash() {
+fun WelcomeDash(username: String, navController: NavHostController) {
 
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -39,7 +43,7 @@ fun WelcomeDash() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = colorResource(id = R.color.dark_green))
+                .background(color = colorResource(id = R.color.n_dark_green))
         ) {
 
             Row(
@@ -57,11 +61,11 @@ fun WelcomeDash() {
                         .padding(top = 20.dp),
                     description = "Logout"
                 )
-                NormalTextComponent(
+                LogoutTextComponent(
                     value = "Logout",
                     modifier = Modifier
-                        .wrapContentSize()
-
+                        .wrapContentSize(),
+                    navController = navController
                 )
             }
 
@@ -71,7 +75,7 @@ fun WelcomeDash() {
                     .fillMaxHeight(0.3f)
                     .fillMaxWidth()
                     .padding(top = 70.dp)
-                    .background(color = colorResource(id = R.color.dark_green)),
+                    .background(color = colorResource(id = R.color.n_dark_green)),
                 contentAlignment = Alignment.Center
             ) {
 
@@ -96,20 +100,18 @@ fun WelcomeDash() {
                     modifier = Modifier
                         .fillMaxHeight()
                         .fillMaxWidth()
-                        .background(color = colorResource(id = R.color.dark_green).copy(alpha = 0.95f)),
+                        .background(color = colorResource(id = R.color.n_dark_green).copy(alpha = 0.95f)),
 
 
                     ) {
                     MultiColorWelcomeTextComponent(
-                        value = "Kygo",
+                        value = username,
                         modifier = Modifier
-                            .fillMaxWidth()
                             .padding(vertical = 20.dp),
 
                         )
                 }
             }
-
         }
     }
 
@@ -119,5 +121,5 @@ fun WelcomeDash() {
 @Preview
 @Composable
 fun PreviewWelcomeDash() {
-    WelcomeDash()
+    WelcomeDash(username = "User", navController = rememberNavController())
 }
