@@ -67,17 +67,17 @@ fun WelcomeDash(username: String, navController: NavHostController) {
 
             Box(
                 modifier = Modifier
-                    .fillMaxHeight(0.3f)
+                    .fillMaxHeight(0.25f)
                     .fillMaxWidth()
-                    .padding(top = 70.dp)
+                    .padding()
                     .background(color = colorResource(id = R.color.n_dark_green)),
                 contentAlignment = Alignment.Center
             ) {
 
                 AppLogo(
                     Modifier
-                        .fillMaxWidth(0.6f)
-                        .fillMaxHeight(0.6f),
+                        .fillMaxWidth(0.5f)
+                        .fillMaxHeight(0.5f),
                 )
 
             }
